@@ -1,0 +1,196 @@
+/* pages/index/index.wxss */
+.container{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10rpx;
+}
+.header{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+   background-color: white;
+   height: 80rpx
+}
+/* .search{
+  width: 92%;
+  height: 90rpx;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  justify-content: center
+} **/
+.find{
+  border: 1rpx solid #D8D8D8;
+  border-radius: 20rpx;
+  width: 90%;
+  height: 80%;
+  justify-content: center;
+  display: flex;
+  flex-direction: row;
+  margin-top: 10rpx;
+}
+input{
+  font-size: 30rpx;
+  height: 60rpx;
+  width: 80%;
+}
+.line{
+  margin: 0 auto;
+  height: 1px;
+  background-color: #D8D8D8;
+  justify-content: center
+}
+.voice{
+  width: 80rpx;
+  height: 80rpx;
+  margin-right: 20rpx
+}
+.photo{
+  width: 80rpx;
+  height: 80rpx;
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+}
+.simg{
+  margin-top: 10rpx;
+   width: 50rpx;
+   height: 50rpx;
+}
+button{
+  font-size: 20rpx;
+  background-color: #04771d;
+  color: #ffffff;
+  
+}
+.content{
+  margin-top: 20rpx;
+  width: 100%;
+  border: 1px solid #04771d
+}
+text{
+  size: 100rpx;
+}
+
+.clear{
+
+  clear: both;
+
+  overflow: hidden;
+
+}
+
+navigator{
+
+  display:inline;
+
+}
+
+.list{
+
+  margin-top:10px;
+  height: 100%;
+
+}
+
+ 
+
+.list .list_item{
+
+  margin-top:10px;
+
+  padding:10px;
+
+  height:100px;
+
+  border-bottom:1px solid #E8E8E8;
+
+}
+
+.list .list_item .img{
+
+  float:left;
+
+  width:40%;
+
+  height:100%;
+
+}
+
+.list .list_item .img image{
+
+   width:100%;
+
+   height:100%;
+
+}
+
+ 
+
+.list .list_item .info{
+
+  width:59%;
+
+  float:right;
+
+  height:100px;
+
+  position:relative;
+
+}
+
+.list .list_item .info .title{
+
+  color:#333;
+
+  margin-left:10px;
+
+  font-size: 15px;
+
+}
+
+ 
+
+.list .list_item .info .price{
+
+  color:#FF2727;
+
+  margin-left:10px;
+
+  margin-top:10px;
+
+  font-size:15px;
+
+}
+
+ 
+
+.list .list_item .info .num{
+
+  position: absolute;
+
+  left:0px;
+
+  bottom:10px;
+
+  color:#747474;
+
+  margin-left:10px;
+
+  font-size:15px;
+
+}
+.pics-list{
+ width:73px;
+ height:73px;
+ float:left;
+ margin-right:6px;
+  
+}
+.uploadImg{
+ width:70px;
+ height:70px;
+}
+
+
+

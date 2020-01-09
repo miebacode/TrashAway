@@ -1,0 +1,14 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+<text class="title">欢迎登录垃圾分类助手</text>
+<input type="number" class="phone_number" placeholder="请输入手机号码" bindblur="getPhone"></input>
+<view class="code">
+<input class="code_number" placeholder="请输入验证码" bindblur="getCode"></input>
+<button>获取验证码</button>
+</view>
+<view>
+<button bindtap="login">登录</button>
+
+</view>
+
+</view>

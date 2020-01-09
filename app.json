@@ -1,0 +1,32 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/game/game"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#007978",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "垃圾分类助手",
+    "backgroundColor": "#ffffff",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "/images/shouye.png",
+        "selectedIconPath": "/images/Selectedshouye.png"
+      },
+      {
+        "pagePath": "pages/game/game",
+        "text": "游戏",
+        "iconPath": "/images/huaban.png",
+        "selectedIconPath": "/images/Selectedyouxi.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}
