@@ -1,7 +1,92 @@
 <!--pages/trashClass/trashClass.wxml-->
-<view class="cont-pro">
+
+<view class="swiper-tab">
+<view class="swiper-tab-list {{currentTab==0 ? 'one' : ''}}"data-current="0"bindtap="switchNav">厨余垃圾</view>
+<view class="swiper-tab-list {{currentTab==1 ? 'two' : ''}}"data-current="1"bindtap="switchNav">其他垃圾</view>
+<view class="swiper-tab-list {{currentTab==2 ? 'three' : ''}}"data-current="2"bindtap="switchNav">可回收垃圾</view>
+<view class="swiper-tab-list {{currentTab==3 ? 'four' : ''}}"data-current="3"bindtap="switchNav">有害垃圾</view>
+</view>
+<swiper current="{{currentTab}} "class="swiper-box "duration="300 "style="height:{{winHeight - 31}}px "bindchange="bindChange">
+<swiper-item>
+     <view class='pro-box'>
+      <view class="title">
+      <image class="logo" src="{{trashTypes[0].images}}"></image>
+      </view> 
+      <text class="item-title">{{trashTypes[0].name}}:</text>
+      <text class='explain'>{{trashTypes[0].explain}}</text>
+        <view class='type'>
+          <image class="img" src="/images/prototype.png"></image>
+          <text class="type_item">常见类型:</text>
+           </view>
+            <text class="content">{{trashTypes[0].classfication}}</text>
+          <view class="require_title">
+          <image class="require_img" src="/images/attend.png"></image>
+          <text class="require_text">投放要求：</text>
+          </view>
+          <text class="request">{{trashTypes[0].request}}</text>
+          </view>   
+</swiper-item>
+<swiper-item>
+     <view class='pro-box'>
+      <view class="title">
+      <image class="logo" src="{{trashTypes[1].images}}"></image>
+      </view> 
+      <text class="item-title">{{trashTypes[1].name}}:</text>
+      <text class='explain'>{{trashTypes[1].explain}}</text>
+        <view class='type'>
+          <image class="img" src="/images/prototype.png"></image>
+          <text class="type_item">常见类型:</text>
+           </view>
+            <text class="content">{{trashTypes[1].classfication}}</text>
+          <view class="require_title">
+          <image class="require_img" src="/images/attend.png"></image>
+          <text class="require_text">投放要求：</text>
+          </view>
+          <text class="request">{{trashTypes[1].request}}</text>
+          </view>   
+</swiper-item>
+<swiper-item>
+     <view class='pro-box'>
+      <view class="title">
+      <image class="logo" src="{{trashTypes[2].images}}"></image>
+      </view> 
+      <text class="item-title">{{trashTypes[2].name}}:</text>
+      <text class='explain'>{{trashTypes[2].explain}}</text>
+        <view class='type'>
+          <image class="img" src="/images/prototype.png"></image>
+          <text class="type_item">常见类型:</text>
+           </view>
+            <text class="content">{{trashTypes[2].classfication}}</text>
+          <view class="require_title">
+          <image class="require_img" src="/images/attend.png"></image>
+          <text class="require_text">投放要求：</text>
+          </view>
+          <text class="request">{{trashTypes[2].request}}</text>
+          </view>   
+</swiper-item>
+<swiper-item>
+     <view class='pro-box'>
+      <view class="title">
+      <image class="logo" src="{{trashTypes[3].images}}"></image>
+      </view> 
+      <text class="item-title">{{trashTypes[3].name}}:</text>
+      <text class='explain'>{{trashTypes[3].explain}}</text>
+        <view class='type'>
+          <image class="img" src="/images/prototype.png"></image>
+          <text class="type_item">常见类型:</text>
+           </view>
+            <text class="content">{{trashTypes[3].classfication}}</text>
+          <view class="require_title">
+          <image class="require_img" src="/images/attend.png"></image>
+          <text class="require_text">投放要求：</text>
+          </view>
+          <text class="request">{{trashTypes[3].request}}</text>
+          </view>   
+</swiper-item>
+</swiper>
+<!-- <view class="cont-pro">
   <!-- 左侧列表 -->
-  <view class='pro-left font28 color9'>
+  <!-- <view class='pro-left font28 color9'>
   <scroll-view scroll-y="true" scroll-into-view="true" scroll-with-animation="true">
 <block wx:for="{{trashTypes}}" wx:for-list="item" wx:key='id'>
 <view class="{{currentLeft == item.id?'active':''}}" data-id='{{item.id}}' bindtap='proItemTap'>
@@ -9,16 +94,16 @@
 </view>
 </block>
 </scroll-view>
-  </view>
+  </view> -->
   <!-- 右侧列表 -->
-  <scroll-view class='pro-right' scroll-y scroll-with-animation="true" scroll-into-view="{{selectedId}}" bindscroll="scrollEvent" scroll-top="{{scrollTop}}">
+  <!-- <scroll-view class='pro-right' scroll-y scroll-with-animation="true" scroll-into-view="{{selectedId}}" bindscroll="scrollEvent" scroll-top="{{scrollTop}}">
     <!-- id要用来实现点击左侧右侧滚动至相应位置的效果；class（pro-box）要用来计算右侧对应左侧某一分类的高度 -->
     <!-- id: item0, item1, item2... （注意：不能直接使用数字或汉字做id）-->
-    <view id='{{"item"+index}}' class='pro-box' wx:for="{{trashTypes}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+    <!-- <view id='{{"item"+index}}' class='pro-box' wx:for="{{trashTypes}}" wx:for-index="index" wx:for-item="item" wx:key="id">
       <view class="title">
       <image class="logo" src="{{item.images}}"></image>
-      </view>
-      <text class="item-title">{{item.name}}:</text>
+      </view> -->
+      <!-- <text class="item-title">{{item.name}}:</text>
       <text class='explain'>{{item.explain}}</text>
         <view class='type'>
           <image class="img" src="/images/prototype.png"></image>
@@ -31,5 +116,5 @@
           </view>
           <text class="request">{{item.request}}</text>
           </view>     
-  </scroll-view>
-  </view>
+  </scroll-view> --> 
+  <!-- </view> -->
