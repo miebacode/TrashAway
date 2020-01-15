@@ -11,7 +11,7 @@
 <image class="photo" src="/images/pic.png" bindtap="uploadImage"></image>
 
 </view>
-<view class='list'>
+<!-- <view class='list'>
   <block wx:for='{{dataList}}' wx:key='list' wx:for-item="item">
   <view class="list_item">
       <navigator url='details?id={{item.goods_id}}'>
@@ -27,9 +27,13 @@
       <view class='clear'></view>
   </view>
   </block>
-</view>
- <view class="pics-list" wx:for="{{pics}}" wx:key="" >
+</view> -->
+ <view class="pics-list" wx:for="{{pics}}" wx:key="item" >
  <image src="{{item}}" class="uploadImg"></image>
+ </view>
+ <view class="goclassfy" bindtap='turnclassfy'>
+ <image class='classfy' src='/images/classfy.png'></image>
+ <text>分类</text>
  </view>
 </view>
 

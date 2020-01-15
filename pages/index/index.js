@@ -99,6 +99,12 @@ Page({
 
   },
 
+  turnclassfy:function(){
+    wx.navigateTo({
+      url: '../trashClass/trashClass',
+    })
+  },
+
   getResponse:function(){
     wx.request({
       url: ' http://www.baidu.com',

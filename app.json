@@ -2,7 +2,8 @@
   "pages": [
     "pages/login/login",
     "pages/index/index",
-    "pages/game/game"
+    "pages/game/game",
+    "pages/trashClass/trashClass"
   ],
   "window": {
     "navigationBarBackgroundColor": "#007978",
