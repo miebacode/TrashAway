@@ -1,0 +1,35 @@
+<!--pages/trashClass/trashClass.wxml-->
+<view class="cont-pro">
+  <!-- 左侧列表 -->
+  <view class='pro-left font28 color9'>
+  <scroll-view scroll-y="true" scroll-into-view="true" scroll-with-animation="true">
+<block wx:for="{{trashTypes}}" wx:for-list="item" wx:key='id'>
+<view class="{{currentLeft == item.id?'active':''}}" data-id='{{item.id}}' bindtap='proItemTap'>
+<text class="pro-title">{{item.name}}</text>
+</view>
+</block>
+</scroll-view>
+  </view>
+  <!-- 右侧列表 -->
+  <scroll-view class='pro-right' scroll-y scroll-with-animation="true" scroll-into-view="{{selectedId}}" bindscroll="scrollEvent" scroll-top="{{scrollTop}}">
+    <!-- id要用来实现点击左侧右侧滚动至相应位置的效果；class（pro-box）要用来计算右侧对应左侧某一分类的高度 -->
+    <!-- id: item0, item1, item2... （注意：不能直接使用数字或汉字做id）-->
+    <view id='{{"item"+index}}' class='pro-box' wx:for="{{trashTypes}}" wx:for-index="index" wx:for-item="item" wx:key="id">
+      <view class="title">
+      <image class="logo" src="{{item.images}}"></image>
+      </view>
+      <text class="item-title">{{item.name}}:</text>
+      <text class='explain'>{{item.explain}}</text>
+        <view class='type'>
+          <image class="img" src="/images/prototype.png"></image>
+          <text class="type_item">常见类型:</text>
+           </view>
+            <text class="content">{{item.classfication}}</text>
+          <view class="require_title">
+          <image class="require_img" src="/images/attend.png"></image>
+          <text class="require_text">投放要求：</text>
+          </view>
+          <text class="request">{{item.request}}</text>
+          </view>     
+  </scroll-view>
+  </view>
