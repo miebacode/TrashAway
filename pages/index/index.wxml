@@ -1,36 +1,53 @@
 <!--pages/index/index.wxml-->
+<view class='maskWindow' wx:if="{{isMaskWindowShow}}" catchtap='maskWindowBgClick' catchtouchmove='move'>
+
+  <view class='maskWindowContent' catchtap='clickTap'>
+
+    <text class="maskWindowTitleText" >图像识别可能结果为：</text>
+
+    <view class='maskWindowList' wx:for='{{maskWindowList}}' wx:for-index='index' wx:if='{{index%2===0}}'>
+
+        <view class="maskWindowText {{index == selectIndex? 'maskWindowText_selected' : 'maskWindowText_unselected'}}" catchtap='maskWindowTableSelect' data-window-Index='{{index}}'>{{maskWindowList[index].keyword}}</view>
+
+        <view class="maskWindowText {{index + 1 == selectIndex? 'maskWindowText_selected' : 'maskWindowText_unselected'}}" catchtap='maskWindowTableSelect' data-window-Index='{{index+1}}'>{{maskWindowList[index+1].keyword}}</view>
+
+    </view>
+
+    <view class='maskWindowBtnView'>
+
+      <view class='maskWindowBtn' catchtap='maskWindowOk'>确定</view>
+
+      <view class='maskWindowBtn' catchtap='maskWindowCancel'>取消</view>
+
+    </view>
+
+  </view>
+
+
+</view>
+<!-- <button wx:if="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button> -->
 <view class="container">
 <view class="header">
 <image class="voice" src="/images/voice.png"/>
 <!-- <view class="search"> -->
 <view class="find">
-<input placeholder="请输入垃圾名称"></input>
+<input placeholder="请输入垃圾名称" bindfocus="focus"></input>
 <image class="simg" src="/images/search.png"/>
 </view>
 <!-- </view> -->
-<image class="photo" src="/images/pic.png" bindtap="uploadImage"></image>
-
+<image class="photo" src="/images/pic.png" bindtap="uploads"></image>
 </view>
-<!-- <view class='list'>
-  <block wx:for='{{dataList}}' wx:key='list' wx:for-item="item">
-  <view class="list_item">
-      <navigator url='details?id={{item.goods_id}}'>
-      <view class='img'>
-        <image src="data:image/jpg;base64,{{imghref}}{{item.goods_img}}"  mode="scaleToFill"/>
-      </view>
-      <view class='info'>
-        <view class='title'>{{item.goods_title}}</view>
-        <view class='price'>￥{{item.goods_price}}</view>
-        <view class='num'>销量{{item.goods_xiaoliang}}</view>
-      </view>
-       </navigator>
-      <view class='clear'></view>
-  </view>
-  </block>
-</view> -->
- <view class="pics-list" wx:for="{{pics}}" wx:key="item" >
- <image src="{{item}}" class="uploadImg"></image>
- </view>
+<view wx:if='{{recordList.length===0}}'>暂没有数据</view>
+ <view wx:if='{{recordList.length!=0}}' class='recordList' wx:for='{{recordList}}' wx:for-index='index'>
+        <text class="Name">{{recordList[index].trashName}}</text>
+        <!-- <view class="Type"> -->
+        <text class="Type" wx:if='{{recordList[index].trashType===0}}'>可回收垃圾</text>
+        <text class="Type" wx:elif='{{recordList[index].trashType===1}}'>有害垃圾</text>
+        <text class="Type" wx:elif='{{recordList[index].trashType===2}}'>厨余垃圾</text>
+        <text class="Type" wx:elif='{{recordList[index].trashType===3}}'>其他垃圾</text>
+        <!-- </view> -->
+        <view class="line"></view>
+</view>
  <view class="goclassfy" bindtap='turnclassfy'>
  <image class='classfy' src='/images/classfy.png'></image>
  <text>分类</text>

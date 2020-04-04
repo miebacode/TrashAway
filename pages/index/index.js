@@ -1,155 +1,333 @@
 // pages/index/index.js
+var app=getApp()
 Page({
-
   /**
    * 页面的初始数据
    */
-
     data: {
-
-      dataList: [
-
-      //   {
-
-      //     goods_id:1,
-
-      //     goods_title:'商品标题1',
-
-      //     goods_img:'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-
-      //     goods_xiaoliang:'0',
-
-      //     goods_price:'60'
-
-      // }, {
-
-      //     goods_id:1,
-
-      //     goods_title:'商品标题2',
-
-      //     goods_img:'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-
-      //     goods_xiaoliang:'0',
-
-      //     goods_price:'70'
-
-      // }, {
-
-      //     goods_id: 1,
-
-      //     goods_title: '商品标题3',
-
-      //     goods_img: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-
-      //     goods_xiaoliang: '0',
-
-      //     goods_price: '80'
-
-      // }, {
-
-      //     goods_id: 1,
-
-      //     goods_title: '商品标题4',
-
-      //     goods_img: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-
-      //     goods_xiaoliang: '0',
-
-      //     goods_price: '90'
-
-      // }, {
-
-      //     goods_id: 1,
-
-      //     goods_title: '商品标题5',
-
-      //     goods_img: 'http://img02.tooopen.com/images/20150928/tooopen_sy_143912755726.jpg',
-
-      //     goods_xiaoliang: '0',
-
-      //     goods_price: '110'
-
-      // }
-
-      ],
       pics:[],
       isShow:true,
+      userInfo: {},
+      hasUserInfo: false,
+      nickName: "",
+      token:"",
+      img:"",
+      isMaskWindowShow: false,
+      isMaskShow:false,
+      maskWindowList: [],
+      selectIndex: -1,
+      // canIUse: wx.canIUse('button.open-type.getUserInfo')
+      openId:'',
+      recordList:[],
     },
-  /**上传图片 */
-  uploadImage: function () {
-    let that = this;
-    let pics = that.data.pics;
-    wx.chooseImage({
-      count: 3 - pics.length,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-        let imgSrc = res.tempFilePaths;
-        pics.push(imgSrc);
-        if (pics.length >= 3) {
-          that.setData({
-            isShow: false
-          })
-        }
-        that.setData({
-          pics: pics
-        })
+  getToken:function(){
+    var that=this;
+    wx.request({
+      url: 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=IaPnlG2iLXQOMGokgVrnWHbI&client_secret=9oLn41p5G4pBqzEwNjx5jiDMVEEHQibD', //服务器地址
+      method: 'post',// OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+      header: {// 设置请求的 header
+        'content-type': 'application/json'
       },
+      success: function (res) {
+        console.log(res);
+        // token = res.data.access_token;
+        that.setData({ //======不能直接写this.setDate======
+          token: res.data.access_token, //在相应的wxml页面显示接收到的数据
+        });
+        // console.log(token)
+      }
+    })
+  },
+  uploads: function () {
+    var that = this;
+    that.getToken();
+    var token='';
+    var img=""
+    var url=""
+    wx.chooseImage({
+      count: 1, // 默认9
+      sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+          wx.showLoading({
+            title: "努力分析中...",
+            mask: true
+          }),
+            wx.getFileSystemManager().readFile({
+              filePath: res.tempFilePaths[0], //选择图片返回的相对路径            
+              encoding: "base64",//这个是很重要的            
+              success: res => { //成功的回调             //返回base64格式            
+              console.log('data:image/png;base64,' + res.data)  
+              img=res.data;    
+              token=that.data.token;          
+        url = "https://aip.baidubce.com/rest/2.0/image-classify/v2/advanced_general?access_token="+token;                
+          wx.request({
+          url: url,
+            // filePath: res.tempFilePaths[0],
+            header: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            method:"post",
+            data: {
+              'image': img,
+              'baike_num':0
+            },
+            success: function (res) {
+              wx.hideLoading();
+              console.log(res);
+              that.setData({
+                maskWindowList:res.data.result
+              });
+              that.showMaskWindow();
+            },
+            fail: function (res) {
+              wx.hideLoading();
+              console.log('失败'+res);
+              wx.showModal({
+                title: '温馨提示',
+                content: 'Sorry 小程序离家出走了',
+                showCancel: false
+              })
+            }
+            
+          })
+      }
+    })
+      }
+    })
+  },
+  /**
+
+   * 页面取消按钮功能
+
+   */
+
+  cancelBtn: function (e) {
+
+    this.showMaskWindow();
+
+  },
+  //弹窗区域点击事件
+
+  clickTap: function (e) {
+  },
+
+  //切换选择项事件
+
+  maskWindowTableSelect: function (e) {
+
+    var index = e.currentTarget.dataset.windowIndex;
+
+    this.setData({
+
+      selectIndex: e.currentTarget.dataset.windowIndex,
+
     })
 
   },
 
+  //弹框以外区域点击
+
+  maskWindowBgClick: function (e) {
+
+    this.dismissMaskWindow();
+
+  },
+
+  maskWindowOk: function (e) {
+
+    var index = this.data.selectIndex;
+
+    var text;
+
+    if (index >= 0 && index < 6) {
+
+      text = this.data.maskWindowList[index].keyword;
+
+    }  else {
+
+      text = "";
+
+    }
+    this.dismissMaskWindow();
+    wx.navigateTo({
+      url: '../word/word?data=' +[text],
+    })
+  },
+
+  // 显示蒙版弹窗
+
+  showMaskWindow: function () {
+
+    this.setData({
+
+      isMaskWindowShow: true,
+
+      selectIndex: -1,
+    })
+
+  },
+
+  // 隐藏蒙版窗体
+
+  dismissMaskWindow: function () {
+
+    this.setData({
+
+      isMaskWindowShow: false,
+
+      selectIndex: -1,
+})
+
+  } ,
   turnclassfy:function(){
     wx.navigateTo({
       url: '../trashClass/trashClass',
     })
   },
-
-  getResponse:function(){
-    wx.request({
-      url: ' http://www.baidu.com',
-      // data: ({
-      //   key:""
-      // }),
-      success(res) {
-        // this.setData({
-        //   response:res.data
-        // }
-        // )
-        console.log(res.data)
-      },fail(res){
-        // this.setData({
-        //   response: "请求失败"
-        // }
-        // )
-        console.log(res.data)
-      }
-    }
-    )
-    // wx.showToast({
-    //   title: '点击了请求按钮',
-    // })
+  focus:function(){
+    wx.navigateTo({
+      url: '../word/word'
+    })
   },
+  addUser:function(e){
+    var that=this
+    var openId=e;
+    wx.request({
+    url: 'http://127.0.0.1:8010/user/add',
+    method:'post',
+    header: {// 设置请求的 header
+      'content-type': 'application/json'
+    },
+    data:{
+      "openId":openId
+    },
+    success(res){
+      that.getUserId(openId)
+    }
+  })
+  },
+  getUserId:function(e){
+    var that=this;
+    wx.request({
+      url: 'http://127.0.0.1:8010/user/findUser',
+      method:'post',
+      header: {// 设置请求的 header
+        'content-type': 'application/json'
+      },
+      data:{
+        "openId":e
+      },
+      success(res){
+      console.log(res);
+        if(res.data.data===-1){
+        that.addUser(e)
+        console.log("增加用户")
+        }else{
+        let userId=res.data.data;
+        wx.setStorageSync('userId', userId)
+        console.log(userId);
+        that.getRecord(userId);
+        }
+
+      }
+      
+    })
+  },
+  getRecord:function(e){
+    var that=this
+    wx.request({
+      url: 'http://127.0.0.1:8010/record/list',
+      method:'post',
+      header: {// 设置请求的 header
+        'content-type': 'application/json'
+      },
+      data:{
+        "userId":e
+      },
+      success(res){
+        console.log(res)
+        that.setData({
+          recordList:res.data.data
+        })
+      }
+    })
+  },
+  getOpenId:function(){
+    var that=this
+  wx.getStorage({
+    key: 'user',
+    success(res){
+      console.log(res)
+      // that.setData({
+      //   openId:res.data.openid
+      // })
+    },
+    fail(res){
+      wx.showLoading({
+        title: '登录中'
+      })
+      wx.login({
+        success: function (res) {
+          if (res.code) {
+            console.log("res.code:" + res.code);
+            var d = that.globalData;//这里存储了appid、secret、token串  
+            var l = 'https://api.weixin.qq.com/sns/jscode2session?appid=' + d.appid + '&secret=' + d.secret + '&js_code=' + res.code + '&grant_type=authorization_code';
+            wx.request({
+              url: l,
+              data: {},
+              method: 'GET',
+              success: function (res) {
+                var obj = {};
+                obj.openid = res.data.openid;
+                console.log("openid:" + obj.openid);
+                console.log("session_key:" + res.data.session_key);
+                obj.expires_in = Date.now() + res.data.expires_in;
+                wx.setStorageSync('user', obj);//存储openid
+                that.setUserInfoAndNext(res)
+              }
+            });
+          } else {
+                  console.log('获取用户登录态失败！' + res.errMsg)
+                  that.setUserInfoAndNext(res)
+                }
+              }
+            });
+    }
+  })
+},
+setUserInfoAndNext(res) {
+  // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+  // 所以此处加入 callback 以防止这种情况
+  if (this.userInfoReadyCallback) {
+    this.userInfoReadyCallback(res)
+  }
+  wx.hideLoading()
+},
 
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    this.getResponse();
+  onLoad: function (options) {  
+    
   },
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    var that =this;
+    that.getOpenId();
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    var that=this
+    let openId=that.data.openId;
+    that.getUserId(openId);
   },
 
   /**

@@ -21,7 +21,7 @@
   justify-content: center
 } **/
 .find{
-  border: 1rpx solid #D8D8D8;
+  border: 1rpx solid  #007978;
   border-radius: 20rpx;
   width: 90%;
   height: 80%;
@@ -47,7 +47,7 @@ input{
   margin-right: 20rpx
 }
 .photo{
-  width: 80rpx;
+  width: 85rpx;
   height: 80rpx;
   margin-left: 20rpx;
   margin-right: 20rpx;
@@ -201,7 +201,7 @@ navigator{
   display: flex;
   flex-direction: row;
    background-color:#ffffff;
-  border:1rpx solid rgb(202, 197, 197);
+  border:1rpx solid  #007978;
   border-radius: 30rpx;
   justify-content: center;
 }
@@ -213,6 +213,142 @@ text{
   margin-top: 6px;
   font-size: 25rpx;
   justify-content: center;
+}
+.maskWindow{
+
+  height: 100%;
+
+  width: 100%;
+
+  position: fixed;
+
+  background-color:rgba(0, 0, 0, .2);
+
+  z-index: 2;
+
+  top: 0;
+
+  left: 0;
+
+}
+
+.maskWindowContent {
+
+  padding: 20rpx 0;
+
+  width: 100%;
+
+  background: #ffffff;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: space-around;
+
+  align-items: center;
+
+  position: fixed;
+
+  bottom:0;
+
+}
+
+.maskWindowTitleText {
+
+  padding: 10rpx 20rpx;
+
+  margin: 10rpx;
+
+  font-size: 16px;
+
+  width: 80%;
+
+}
+
+.maskWindowList {
+
+  width: 80%;
+
+  display: flex;
+
+  flex-direction: row;
+
+}
+
+.maskWindowText {
+
+  padding: 10rpx 20rpx;
+
+  margin: 8rpx;
+
+  width: 50%;
+
+  font-size: 14px;
+
+  border-radius: 10rpx;
+
+}
+
+.maskWindowText_selected {
+
+  border: 1px solid  #007978;
+
+}
+
+.maskWindowText_unselected {
+
+  border: 1px solid lightgray;
+
+}
+
+
+
+.maskWindowBtnView {
+
+  width: 80%;
+
+  margin-top: 20rpx;
+
+  display: flex;
+
+  flex-direction: row;
+
+  justify-content: flex-end;
+
+}
+
+.maskWindowBtn {
+
+  padding: 10rpx 50rpx;
+
+  margin: 20rpx;
+
+  font-size: 14px;
+
+  border-radius: 10rpx;
+
+  border: 1px solid  #007978;
+
+}
+.recordList{
+  display: flex;
+  flex-direction: row;
+  width: 95%;
+  border-radius: 10rpx;
+  border:1px solid  #007978;
+  height: 70rpx;
+  margin: 15rpx;
+}
+.Name{
+ font-size: 35rpx;
+ width: 70%;
+ margin: 10rpx;
+ 
+}
+.Type{
+  font-size:35rpx;
+  margin-top: 10rpx;
 }
 
 
