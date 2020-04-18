@@ -36,4 +36,7 @@
         <text class="Type" wx:elif='{{resultlist[index].type===3}}'>其他垃圾</text>
         <view class="line"></view>
 </view>
+<view wx:if="{{isShow}}">
+<image class="nores" src="../../images/noresult.jpg"></image>
+</view>
 </view>

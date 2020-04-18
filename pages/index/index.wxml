@@ -37,7 +37,10 @@
 <!-- </view> -->
 <image class="photo" src="/images/pic.png" bindtap="uploads"></image>
 </view>
-<view wx:if='{{recordList.length===0}}'>暂没有数据</view>
+<view wx:if='{{recordList.length===0}}' class="empty">
+<image class="empty_img" src="../../images/empty.png"></image>
+<text class="empty_text">暂无数据</text>
+</view>
  <view wx:if='{{recordList.length!=0}}' class='recordList' wx:for='{{recordList}}' wx:for-index='index'>
         <text class="Name">{{recordList[index].trashName}}</text>
         <!-- <view class="Type"> -->

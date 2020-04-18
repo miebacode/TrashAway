@@ -11,6 +11,7 @@ Page({
     },
     userId:'',
     isMaskShow: false,
+    isShow:false,
   },
   inputTyping: function (e) {
     this.setData({
@@ -20,16 +21,22 @@ Page({
   search:function(){
     var that=this;
     that.setData({
-      resultlist:null
+      resultlist:null,
+      isShow:false
     })
     var inputVal=that.data.inputVal;
+    if(inputVal.length===0){
+       wx.showToast({
+         title: '垃圾名不能为空',
+       })
+    }else{
     wx.request({
       url: 'https://api.tianapi.com/txapi/lajifenlei/index?key=8ed19838f42ff06874fc72cecf57494b&word='+inputVal,
       success:function(res){
         if(res.data.code==250){
-          wx.showToast({
-            title: '该垃圾还没有被分类',
-          })
+            that.setData({
+              isShow:true
+            })
         }else{
           console.log(res);
         that.setData({
@@ -38,18 +45,19 @@ Page({
         }
       }
     })
+  }
   },
   addRecord:function(e){
     var that=this
     let result=e;
     wx.getStorage({
-      key: 'userId',
+      key: 'userid',
       success(res){
         let userId=res.data;
         let trashName=result.name;
         let trashType=result.type;
         wx.request({
-          url: 'http://127.0.0.1:8010/record/add',
+          url: 'http://120.26.187.5:8888/qiandaobao-0.0.1-SNAPSHOT/record/add',
           method:'POST',
           header: {// 设置请求的 header
             'content-type': 'application/json'
@@ -61,6 +69,9 @@ Page({
           },
           success(res){
             console.log(res)
+          },
+          fail(res){
+            console.log("失败")
           }
         })
       }
@@ -82,8 +93,9 @@ Page({
      that.dismissMask();
   },
   cancel:function(){
-    wx.navigateBack({
-      
+    var that=this;
+    that.setData({
+      inputVal:""
     })
   },
   // 显示蒙版弹窗
@@ -104,6 +116,38 @@ Page({
     })
 
   },
+  getTrashResult(e){
+    let text=e;
+    var that=this;
+    that.setData({
+      isShow:false
+    })
+    wx.request({
+      url: 'https://api.tianapi.com/txapi/lajifenlei/index?key=8ed19838f42ff06874fc72cecf57494b&word='+text,
+      success: function (res) {
+        if (res.data.code == 200) {
+          // that.setData({
+          //   content: res.data.newslist[0].content
+          // })
+          console.log(res);
+          let list=res.data.newslist;
+          that.setData({
+            resultlist:list,
+          })
+         
+        } else {
+          that.setData({
+            isShow:true
+          })
+        }
+      },
+      fail: function (err) {
+        that.setData({
+          isShow:true
+        })
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -115,32 +159,7 @@ Page({
       inputVal:text
     })
      //微信、百度等小程序参考代码，和 Jquery发送ajax请求是一样的
-     wx.request({
-      url: 'https://api.tianapi.com/txapi/lajifenlei/index?key=8ed19838f42ff06874fc72cecf57494b&word='+text,
-      success: function (res) {
-        if (res.data.code == 200) {
-          // that.setData({
-          //   content: res.data.newslist[0].content
-          // })
-          console.log(res);
-          let list=res.data.newslist;
-          that.setData({
-            resultlist:list
-          })
-         
-        } else {
-          wx.showToast({
-            title: '该垃圾还没有被列入分类',
-          });
-        }
-      },
-      fail: function (err) {
-        // console.log(err)
-        wx.showToast({
-          title: ''+err,
-        })
-      }
-    })
+     that.getTrashResult(text);
   }
   },
 

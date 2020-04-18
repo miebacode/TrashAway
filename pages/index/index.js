@@ -5,18 +5,11 @@ Page({
    * 页面的初始数据
    */
     data: {
-      pics:[],
-      isShow:true,
-      userInfo: {},
-      hasUserInfo: false,
-      nickName: "",
       token:"",
       img:"",
       isMaskWindowShow: false,
-      isMaskShow:false,
       maskWindowList: [],
       selectIndex: -1,
-      // canIUse: wx.canIUse('button.open-type.getUserInfo')
       openId:'',
       recordList:[],
     },
@@ -38,16 +31,61 @@ Page({
       }
     })
   },
+  getImageResult:function(e1,e2){
+    let token=e1;
+    let img=e2;
+    var that = this;
+    let url = "https://aip.baidubce.com/rest/2.0/image-classify/v2/advanced_general?access_token="+token;                
+    wx.request({
+    url: url,
+      // filePath: res.tempFilePaths[0],
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method:"post",
+      data: {
+        'image': img,
+        'baike_num':0
+      },
+      success: function (res) {
+        wx.hideLoading();
+        console.log(res);
+        that.setData({
+          maskWindowList:res.data.result
+        });
+        that.showMaskWindow();
+      },
+      fail: function (res) {
+        wx.hideLoading();
+        console.log('失败'+res);
+        wx.showModal({
+          title: '温馨提示',
+          content: 'Sorry 小程序离家出走了',
+          showCancel: false
+        })
+      }
+      
+    })
+
+  },
   uploads: function () {
     var that = this;
+    wx.showActionSheet({
+
+      itemList: ['相册', '拍照'],
+
+      success: function (res) {
+
+        console.log(res);
+        let tap=res.tapIndex;
     that.getToken();
     var token='';
     var img=""
-    var url=""
+    if(tap===0){
     wx.chooseImage({
       count: 1, // 默认9
       sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      sourceType: ['album'], // 可以指定来源是相册还是相机，默认二者都有
       success: function (res) {
           wx.showLoading({
             title: "努力分析中...",
@@ -59,53 +97,38 @@ Page({
               success: res => { //成功的回调             //返回base64格式            
               console.log('data:image/png;base64,' + res.data)  
               img=res.data;    
-              token=that.data.token;          
-        url = "https://aip.baidubce.com/rest/2.0/image-classify/v2/advanced_general?access_token="+token;                
-          wx.request({
-          url: url,
-            // filePath: res.tempFilePaths[0],
-            header: {
-              'content-type': 'application/x-www-form-urlencoded'
-            },
-            method:"post",
-            data: {
-              'image': img,
-              'baike_num':0
-            },
-            success: function (res) {
-              wx.hideLoading();
-              console.log(res);
-              that.setData({
-                maskWindowList:res.data.result
-              });
-              that.showMaskWindow();
-            },
-            fail: function (res) {
-              wx.hideLoading();
-              console.log('失败'+res);
-              wx.showModal({
-                title: '温馨提示',
-                content: 'Sorry 小程序离家出走了',
-                showCancel: false
-              })
-            }
-            
-          })
+              token=that.data.token;  
+              that.getImageResult(token,img);        
       }
     })
       }
     })
-  },
-  /**
+  }else if(tap===1){
+    wx.chooseImage({
+      count: 1, // 默认9
+      sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+          wx.showLoading({
+            title: "努力分析中...",
+            mask: true
+          }),
+            wx.getFileSystemManager().readFile({
+              filePath: res.tempFilePaths[0], //选择图片返回的相对路径            
+              encoding: "base64",//这个是很重要的            
+              success: res => { //成功的回调             //返回base64格式            
+              console.log('data:image/png;base64,' + res.data)  
+              img=res.data;    
+              token=that.data.token;  
+              that.getImageResult(token,img);        
+      }
+    })
+      }
+    })
+  }
+  }
 
-   * 页面取消按钮功能
-
-   */
-
-  cancelBtn: function (e) {
-
-    this.showMaskWindow();
-
+})
   },
   //弹窗区域点击事件
 
@@ -194,7 +217,7 @@ Page({
     var that=this
     var openId=e;
     wx.request({
-    url: 'http://127.0.0.1:8010/user/add',
+    url: 'http://120.26.187.5:8888/qiandaobao-0.0.1-SNAPSHOT/user/add',
     method:'post',
     header: {// 设置请求的 header
       'content-type': 'application/json'
@@ -203,6 +226,7 @@ Page({
       "openId":openId
     },
     success(res){
+      console.log(res);
       that.getUserId(openId)
     }
   })
@@ -210,7 +234,7 @@ Page({
   getUserId:function(e){
     var that=this;
     wx.request({
-      url: 'http://127.0.0.1:8010/user/findUser',
+      url: 'http://120.26.187.5:8888/qiandaobao-0.0.1-SNAPSHOT/user/findUser',
       method:'post',
       header: {// 设置请求的 header
         'content-type': 'application/json'
@@ -220,12 +244,12 @@ Page({
       },
       success(res){
       console.log(res);
-        if(res.data.data===-1){
+        if(res.data.data==-1){
         that.addUser(e)
         console.log("增加用户")
         }else{
         let userId=res.data.data;
-        wx.setStorageSync('userId', userId)
+        wx.setStorageSync('userid', userId)
         console.log(userId);
         that.getRecord(userId);
         }
@@ -237,7 +261,7 @@ Page({
   getRecord:function(e){
     var that=this
     wx.request({
-      url: 'http://127.0.0.1:8010/record/list',
+      url: 'http://120.26.187.5:8888/qiandaobao-0.0.1-SNAPSHOT/record/list',
       method:'post',
       header: {// 设置请求的 header
         'content-type': 'application/json'
@@ -255,46 +279,48 @@ Page({
   },
   getOpenId:function(){
     var that=this
-  wx.getStorage({
-    key: 'user',
-    success(res){
-      console.log(res)
-      // that.setData({
-      //   openId:res.data.openid
-      // })
-    },
-    fail(res){
-      wx.showLoading({
-        title: '登录中'
-      })
-      wx.login({
-        success: function (res) {
-          if (res.code) {
-            console.log("res.code:" + res.code);
-            var d = that.globalData;//这里存储了appid、secret、token串  
-            var l = 'https://api.weixin.qq.com/sns/jscode2session?appid=' + d.appid + '&secret=' + d.secret + '&js_code=' + res.code + '&grant_type=authorization_code';
+    wx.getStorage({
+      key: 'openId',
+      success(res){
+        console.log(res)
+        that.setData({
+          openId:res.data
+        })
+      },
+      fail(res){
+        wx.showLoading({
+          title: '登录中'
+        })
+        wx.login({
+          success: function (res) {
+            let code=res.code;
             wx.request({
-              url: l,
-              data: {},
-              method: 'GET',
-              success: function (res) {
-                var obj = {};
-                obj.openid = res.data.openid;
-                console.log("openid:" + obj.openid);
-                console.log("session_key:" + res.data.session_key);
-                obj.expires_in = Date.now() + res.data.expires_in;
-                wx.setStorageSync('user', obj);//存储openid
-                that.setUserInfoAndNext(res)
-              }
-            });
-          } else {
-                  console.log('获取用户登录态失败！' + res.errMsg)
+              url: 'http://120.26.187.5:8888/qiandaobao-0.0.1-SNAPSHOT/weChat/login',
+              method:'post',
+              data:{
+                code:code
+              },
+              success:function(res){
+                console.log(res);
+                let openId=res.data.data.openid
+                that.setData({
+                  openId:openId
+                })
+                console.log(openId);
+                  // obj.openid = res.data.data.openid;
+                  wx.setStorageSync('openId', openId);//存储openid
                   that.setUserInfoAndNext(res)
                 }
-              }
-            });
-    }
-  })
+              });
+            }, 
+            fail(res) {
+                    console.log('获取用户登录态失败！' + res.errMsg)
+                    that.setUserInfoAndNext(res)
+                  }
+              });
+      }
+    })
+     
 },
 setUserInfoAndNext(res) {
   // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
@@ -309,7 +335,6 @@ setUserInfoAndNext(res) {
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {  
-    
   },
 
 
@@ -327,7 +352,18 @@ setUserInfoAndNext(res) {
   onShow: function () {
     var that=this
     let openId=that.data.openId;
-    that.getUserId(openId);
+    // that.getUserId(openId);
+    wx.getStorage({
+      key: 'userid',
+      success(res){
+        console.log(res);
+        let userId=res.data;
+        that.getRecord(userId);
+      },
+      fail(res){
+        that.getUserId(openId)
+      }
+    })
   },
 
   /**

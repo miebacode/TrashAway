@@ -120,3 +120,6 @@ input{
   width: 180px;
   margin-top: 10px;
 }
+.nores{
+  margin-top: 20rpx;
+}
