@@ -2,6 +2,7 @@
 .pro-box{
   margin:10rpx;
   width: 92%;
+  height: 150%;
   display: flex;
   flex-direction: column;
   /* border: 1rpx solid #000000; */

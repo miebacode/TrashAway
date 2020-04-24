@@ -1,0 +1,15 @@
+
+<progress strokeWidth="4" percent="{{value}}" wx:if="{{showPg}}" ></progress>
+
+<view class="wordstyle">
+  <text wx:if="{{isSuccess}}">{{textSucceedBaidu}}{{textSucceedList}} </text>
+  <text wx:else >{{textOriginal}}</text>
+</view>
+
+<view class="head">
+
+  <view class="dot {{isTouchStart==true?'dot-blowup':''}} {{isTouchEnd==true?'dot-zoomout':''}}" style="display:{{isDot}}"></view>
+  <view class="record" catchtouchstart="recordStart" catchtouchend="recordStop">
+    <image mode="widthFix" src="/images/microphone.png"></image>
+  </view>
+</view>

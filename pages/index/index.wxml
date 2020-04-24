@@ -52,8 +52,8 @@
         <view class="line"></view>
 </view>
  <view class="goclassfy" bindtap='turnclassfy'>
- <image class='classfy' src='/images/classfy.png'></image>
- <text>分类</text>
+ <image class='classfy' src='/images/huaban.png'></image>
+ <text>游戏</text>
  </view>
 </view>
 

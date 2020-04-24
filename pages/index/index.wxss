@@ -194,23 +194,25 @@ navigator{
 .goclassfy{
   float: right;
   position: fixed;
-  bottom: 100rpx;
+  bottom: 110rpx;
   right: 60rpx; 
   width: 135rpx;
-  height: 55rpx;
+  height: 60rpx;
   display: flex;
   flex-direction: row;
    background-color:#ffffff;
-  border:1rpx solid  #007978;
+  border:1rpx solid  #ddd123;
   border-radius: 30rpx;
   justify-content: center;
 }
 .classfy{
   width: 50rpx;
   height: 50rpx;
+  margin-top: 3px;
 }
 text{
   margin-top: 6px;
+  margin-left: 5px;
   font-size: 25rpx;
   justify-content: center;
 }

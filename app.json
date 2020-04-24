@@ -22,12 +22,16 @@
         "selectedIconPath": "/images/Selectedshouye.png"
       },
       {
-        "pagePath": "pages/game/game",
-        "text": "游戏",
-        "iconPath": "/images/huaban.png",
-        "selectedIconPath": "/images/Selectedyouxi.png"
+        "pagePath": "pages/trashClass/trashClass",
+        "text": "科普",
+        "iconPath": "/images/kepu.png",
+        "selectedIconPath": "/images/kepued.png"
       }
     ]
   },
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "navigateToMiniProgramAppIdList": [
+    "wxa6f6e1cd54e2f6d7"
+]
+
 }

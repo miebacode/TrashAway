@@ -204,8 +204,27 @@ Page({
 
   } ,
   turnclassfy:function(){
-    wx.navigateTo({
-      url: '../trashClass/trashClass',
+    // wx.navigateTo({
+    //   url: '../trashClass/trashClass',
+    // })
+    // wx.navigateToMiniProgram({
+    //   appId: 'wxa6f6e1cd54e2f6d7',
+    //   envVersion: 'develop',
+    //   success(res){
+    //     console.log(res);
+    //   }
+    // })
+    return new Promise((resolve, reject) => {
+      wx.navigateToMiniProgram({
+        appId: 'wxa6f6e1cd54e2f6d7',
+        path: '',
+        extraData: {},
+        envVersion: 'develop',
+        success(res) {
+          // 打开成功
+          console.log("跳转成功了。。。");
+        }
+      })
     })
   },
   focus:function(){
