@@ -1,9 +1,9 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/game/game",
     "pages/trashClass/trashClass",
-    "pages/word/word"
+    "pages/word/word",
+    "pages/voice/voice"
   ],
   "window": {
     "navigationBarBackgroundColor": "#007978",
@@ -29,9 +29,16 @@
       }
     ]
   },
+  "plugins": {
+    "WechatSI": {
+      "version": "0.0.7",
+      "provider": "wx069ba97219f66d99"
+        }
+  },
   "sitemapLocation": "sitemap.json",
   "navigateToMiniProgramAppIdList": [
     "wxa6f6e1cd54e2f6d7"
 ]
+
 
 }
